@@ -118,28 +118,6 @@ def print_and_return(title, name_parts, root_l):
     return res
 
 
-def original_expressive_key(name):
-    """
-    ORIGINAL EXPRESSIVE KEY (OEK)
-    indicates goals here on earth and provides the necessary]
-    guidance for their attainment
-
-    Parameter
-    ---------
-    name: str, full name of the person
-
-    """
-    name_parts = name.upper().split()
-    root_1 = []
-    for _, v in enumerate(name_parts):
-        res_num = [NUM_SCALE[x] for x in v]
-        letters_total = sum(res_num)
-        root_1.append(letters_total)
-
-    title = "* Original Expressive Key (OEK) *"
-    return print_and_return(title, name_parts, root_1)
-
-
 def original_soul_print(name):
     """
     ORIGINAL SOUL PRINT (OSP)
@@ -162,18 +140,111 @@ def original_soul_print(name):
     return print_and_return(title, name_parts, root_1)
 
 
-def gnothology_chart(name):
+def original_expressive_key(name):
+    """
+    ORIGINAL EXPRESSIVE KEY (OEK)
+    indicates goals here on earth and provides the necessary]
+    guidance for their attainment
+
+    Parameter
+    ---------
+    name: str, full name of the person
+
+    """
+    name_parts = name.upper().split()
+    root_1 = []
+    for _, v in enumerate(name_parts):
+        res_num = [NUM_SCALE[x] for x in v]
+        letters_total = sum(res_num)
+        root_1.append(letters_total)
+
+    title = "* Original Expressive Key (OEK) *"
+    return print_and_return(title, name_parts, root_1)
+
+
+def original_personal_vibration(name):
+    """
+    ORIGINAL PERSONAL VIBRATION (OPV)
+    both good and bad points in outward personality;
+    with understanding, can be balanced by OPV
+
+    Parameter
+    ---------
+    name: str, full name of the person
+
+    """
+    name_parts = name.upper().split()
+    root_1 = []
+    for _, v in enumerate(name_parts):
+        res_num = [NUM_SCALE[x] for x in v if x in CONSONANTS]
+        letters_total = sum(res_num)
+        root_1.append(letters_total)
+
+    title = "* Original Personal Vibration (OSP) *"
+    return print_and_return(title, name_parts, root_1)
+
+
+def change_soul_print(new_name):
+    """
+    CHANGE SOUL PRINT (CSP)
+    add together the total numbers of all VOWELS
+    in the new name
+    """
+    name_parts = new_name.upper().split()
+    root_1 = []
+    for _, v in enumerate(name_parts):
+        res_num = [NUM_SCALE[x] for x in v if x in VOWELS]
+        letters_total = sum(res_num)
+        root_1.append(letters_total)
+
+    title = "* Change Soul print (CSP) *"
+    return print_and_return(title, name_parts, root_1)
+
+
+def change_personality_vibration(new_name):
+    """
+    CHANGE PERSONALITY VIBRATION (CPV)
+    add together the total numbers of all CONSONANTS
+    in the new name
+    """
+    name_parts = new_name.upper().split()
+    root_1 = []
+    for _, v in enumerate(name_parts):
+        res_num = [NUM_SCALE[x] for x in v if x in CONSONANTS]
+        letters_total = sum(res_num)
+        root_1.append(letters_total)
+
+    title = "* Change Personality Vibration (CPV) *"
+    return print_and_return(title, name_parts, root_1)
+
+
+def change_expressive_key(new_name):
+    """
+    CHANGE EXPRESSIVE KEY (CEK)
+    Add together the total numbers of every letter.
+    """
+    name_parts = new_name.upper().split()
+    root_1 = []
+    for _, v in enumerate(name_parts):
+        res_num = [NUM_SCALE[x] for x in v]
+        letters_total = sum(res_num)
+        root_1.append(letters_total)
+
+    title = "* Change Expressive Key (CEK) *"
+    return print_and_return(title, name_parts, root_1)
+
+
+def gnothology_chart(name, new_name):
     """Gnothology Chart - pandas dataframe"""
-    pass
-
-
-if __name__ == '__main__':
-    name = "Aaryaansh Arora Khattri"
     osp = original_soul_print(name)
     oek = original_expressive_key(name)
+    opv = original_personal_vibration(name)
+    csp = change_soul_print(new_name)
+    cpv = change_personality_vibration(new_name)
+    cek = change_expressive_key(new_name)
     data_dict = {
-        'procedure': ['OSP', 'OEK'],
-        'value': [osp, oek]
+        'procedure': ['OSP', 'OPV', 'OEK', 'CSP', 'CPV', 'CEK'],
+        'value': [osp, opv, oek, csp, cpv, cek]
     }
     df = pd.DataFrame(data_dict)
     title = "* Analysis Summary *"
@@ -181,3 +252,9 @@ if __name__ == '__main__':
 
     print(f"\n{dashes}\n{title}\n{dashes}")
     print(df)
+
+
+if __name__ == '__main__':
+    name = "Aaryaansh Arora Khattri"
+    new_name = "Aaryaansh Khattri"
+    gnothology_chart(name, new_name)
