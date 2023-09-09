@@ -11,6 +11,7 @@ CONSONANTS = [chr(x) for x in range(65, 91) if chr(x) not in VOWELS]
 
 def sum_of_letters(name, only_vowels=False, only_consonants=False):
     """SUM OF LETTERS IN NAME"""
+    name = name.upper()
     if only_vowels:
         res_name = [letter for letter in name if letter in VOWELS]
     elif only_consonants:
@@ -47,13 +48,36 @@ def reduced_num(num, emn=True):
     return res
 
 
+def check_single_digit(num_list):
+    """Find if all items in list are single digit"""
+    digits = [len(str(x)) for x in num_list]
+    # return all((i < 2 or i in EARTHLY_MASTER_NUM) for i in digits)
+    for i in range(len(digits)):
+        if digits[i] > 1 and num_list[i] not in EARTHLY_MASTER_NUM:
+            return False
+    return True
+
+
 def final_root(num_list):
     """Single digit"""
-    temp_res = sum(num_list)
-    if len(str(temp_res)) < 2:
-        return sum(num_list)
+
+    # check if it's a list or int
+    res = sum(num_list)
+
+    digits = len(str(res))
+    mes = f"{res}"
+
+    if digits < 2 or res in EARTHLY_MASTER_NUM:
+        res = res
     else:
-        return f"{temp_res} / {reduced_num(temp_res)}"
+        res = reduced_num(res)
+        mes += f" / {res}"
+        cond = len(str(res)) < 2 or res in EARTHLY_MASTER_NUM
+        if not cond:
+            res = reduced_num(res)
+            mes += f" / {res}"
+
+    return res, mes
 
 
 def num_composition(num_list, name_parts):
@@ -83,37 +107,83 @@ def original_expressive_key(name):
         letters_total = sum(res_num)
         root_1.append(letters_total)
 
-    root_2 = [reduced_num(n) for n in root_1]
-    root_3 = [reduced_num(n, emn=False) for n in root_2]
-    f_root = final_root(root_3)
+    title = "* Original Expressive Key (OEK) *"
+    dashes = len(title) * "-"
 
-    title = "*** Original Expressive Key (OEK) ***"
-    dashes = len(title) * "="
-
-    print(f"\n{title}\n{dashes}")
+    print(f"\n{dashes}\n{title}\n{dashes}")
     print(*name_parts)
     num_composition(root_1, name_parts)
     print()
-    num_composition(root_2, name_parts)
+
+    nl = root_1
+    cond = False
+    while not cond:
+        nl = [reduced_num(n) for n in nl]
+        num_composition(nl, name_parts)
+        print()
+        cond = check_single_digit(nl)
+
+    res, mes = final_root(nl)
+    print(f"{mes:^{len(name) - len(names)}}")
+    return res
+
+
+def original_soul_print(name):
+    """
+    ORIGINAL SOUL PRINT (OSP)
+    inner soul desire; deepest longings; highest goal;
+    dream come true
+
+    Parameter
+    ---------
+    name: str, full name of the person
+
+    """
+    names = name_split(name.upper())
+    name_parts = [v for v in names.values()]
+    root_1 = []
+    for k, v in names.items():
+        res_num = [NUM_SCALE[x] for x in v if x in VOWELS]
+        letters_total = sum(res_num)
+        root_1.append(letters_total)
+
+    title = "* Original Soul print (OSP) *"
+    dashes = len(title) * "-"
+
+    print(f"\n{dashes}\n{title}\n{dashes}")
+    print(*name_parts)
+    num_composition(root_1, name_parts)
     print()
-    num_composition(root_3, name_parts)
-    print()
-    print(f"{f_root:^{len(name) - len(names) -1}}")
-    # for i in range(len(root_1)):
-    #     # breakpoint()
-    #     pad = len(name_parts[i])
-    #     print(f"{root_1[i]:^{pad}}", end=" ")
-    print(f"\n{dashes}")
+
+    nl = root_1
+    cond = check_single_digit(nl)
+    while not cond:
+        nl = [reduced_num(n) for n in nl]
+        num_composition(nl, name_parts)
+        print()
+        cond = check_single_digit(nl)
+
+    res, mes = final_root(nl)
+    print(f"{mes:^{len(name) - len(names)}}")
+    return res
 
 
 def gnothology_chart(name):
     """Gnothology Chart - pandas dataframe"""
-    nname, osp = original_soul_print(name)
-    res_dict = {"name": nname, "osp_1R": osp}
-    df = pd.DataFrame.from_dict(res_dict)
-    print(df)
+    pass
 
 
 if __name__ == '__main__':
-    name = "Arun Kumar khatri"
-    original_soul_print(name)
+    name = "Bhim Bahadur Khattri"
+    osp = original_soul_print(name)
+    oek = original_expressive_key(name)
+    data_dict = {
+        'procedure': ['OSP', 'OEK'],
+        'value': [osp, oek]
+    }
+    df = pd.DataFrame(data_dict)
+    title = "* Analysis Summary *"
+    dashes = len(title) * "-"
+
+    print(f"\n{dashes}\n{title}\n{dashes}")
+    print(df)
