@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "gnothology"
+version = "0.1.0"
+description = "Gnothology - Eileen Connolly"
+authors = ["Arun Khattri <arunkhattri@outlook.com>"]
+license = "GPLv3"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9, <=3.12"
+numpy = "^1.25.2"
+matplotlib = "^3.7.2"
+seaborn = "^0.12.2"
+python-lsp-ruff = "^1.5.1"
+
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.12.0"
+python-lsp-server = {extras = ["all"], version = "^1.7.4"}
+pytest = "^7.4.0"
+black = "^23.7.0"
+mypy = "^1.5.1"
+ipython = "^8.14.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
