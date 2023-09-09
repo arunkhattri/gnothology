@@ -88,6 +88,36 @@ def num_composition(num_list, name_parts):
         print(f"{num_list[i]:^{pad}}", end=" ")
 
 
+def print_and_return(title, name_parts, root_l):
+    """
+    Print and Return
+
+    Parameter
+    ---------
+    title: str, name of the procedure;
+    name_parts: list of str, part of names splitted;
+    root_l: list,
+    """
+    dashes = len(title) * "-"
+
+    print(f"\n{dashes}\n{title}\n{dashes}")
+    print(*name_parts)
+    num_composition(root_l, name_parts)
+    print()
+
+    nl = root_l
+    cond = False
+    while not cond:
+        nl = [reduced_num(n) for n in nl]
+        num_composition(nl, name_parts)
+        print()
+        cond = check_single_digit(nl)
+
+    res, mes = final_root(nl)
+    print(f"{mes:^{len(name) - len(name_parts)}}")
+    return res
+
+
 def original_expressive_key(name):
     """
     ORIGINAL EXPRESSIVE KEY (OEK)
@@ -99,33 +129,15 @@ def original_expressive_key(name):
     name: str, full name of the person
 
     """
-    names = name_split(name.upper())
-    name_parts = [v for v in names.values()]
+    name_parts = name.upper().split()
     root_1 = []
-    for k, v in names.items():
+    for _, v in enumerate(name_parts):
         res_num = [NUM_SCALE[x] for x in v]
         letters_total = sum(res_num)
         root_1.append(letters_total)
 
     title = "* Original Expressive Key (OEK) *"
-    dashes = len(title) * "-"
-
-    print(f"\n{dashes}\n{title}\n{dashes}")
-    print(*name_parts)
-    num_composition(root_1, name_parts)
-    print()
-
-    nl = root_1
-    cond = False
-    while not cond:
-        nl = [reduced_num(n) for n in nl]
-        num_composition(nl, name_parts)
-        print()
-        cond = check_single_digit(nl)
-
-    res, mes = final_root(nl)
-    print(f"{mes:^{len(name) - len(names)}}")
-    return res
+    return print_and_return(title, name_parts, root_1)
 
 
 def original_soul_print(name):
@@ -139,33 +151,15 @@ def original_soul_print(name):
     name: str, full name of the person
 
     """
-    names = name_split(name.upper())
-    name_parts = [v for v in names.values()]
+    name_parts = name.upper().split()
     root_1 = []
-    for k, v in names.items():
+    for _, v in enumerate(name_parts):
         res_num = [NUM_SCALE[x] for x in v if x in VOWELS]
         letters_total = sum(res_num)
         root_1.append(letters_total)
 
     title = "* Original Soul print (OSP) *"
-    dashes = len(title) * "-"
-
-    print(f"\n{dashes}\n{title}\n{dashes}")
-    print(*name_parts)
-    num_composition(root_1, name_parts)
-    print()
-
-    nl = root_1
-    cond = check_single_digit(nl)
-    while not cond:
-        nl = [reduced_num(n) for n in nl]
-        num_composition(nl, name_parts)
-        print()
-        cond = check_single_digit(nl)
-
-    res, mes = final_root(nl)
-    print(f"{mes:^{len(name) - len(names)}}")
-    return res
+    return print_and_return(title, name_parts, root_1)
 
 
 def gnothology_chart(name):
@@ -174,7 +168,7 @@ def gnothology_chart(name):
 
 
 if __name__ == '__main__':
-    name = "Bhim Bahadur Khattri"
+    name = "Aaryaansh Arora Khattri"
     osp = original_soul_print(name)
     oek = original_expressive_key(name)
     data_dict = {
