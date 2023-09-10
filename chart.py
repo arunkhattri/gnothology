@@ -9,23 +9,6 @@ VOWELS = ["A", "E", "I", "O", "U"]
 CONSONANTS = [chr(x) for x in range(65, 91) if chr(x) not in VOWELS]
 
 
-def sum_of_letters(name, only_vowels=False, only_consonants=False):
-    """SUM OF LETTERS IN NAME"""
-    name = name.upper()
-    if only_vowels:
-        res_name = [letter for letter in name if letter in VOWELS]
-    elif only_consonants:
-        res_name = [letter for letter in name if letter in CONSONANTS]
-    else:
-        res_name = name
-
-    res = 0
-
-    for letter in res_name:
-        res += NUM_SCALE[letter]
-    return res
-
-
 def name_split(name):
     """Split the name."""
     res = name.split(" ")
@@ -80,15 +63,16 @@ def final_root(num_list):
     return res, mes
 
 
-def num_composition(num_list, name_parts):
+def num_composition(num_list, name_parts, verbose=True):
     """Helper for pretty printing"""
-    for i in range(len(num_list)):
-        # breakpoint()
-        pad = len(name_parts[i])
-        print(f"{num_list[i]:^{pad}}", end=" ")
+    if verbose:
+        for i in range(len(num_list)):
+            # breakpoint()
+            pad = len(name_parts[i])
+            print(f"{num_list[i]:^{pad}}", end=" ")
 
 
-def print_and_return(title, name_parts, root_l):
+def print_and_return(title, name_parts, root_l, verbose=True):
     """
     Print and Return
 
@@ -96,29 +80,33 @@ def print_and_return(title, name_parts, root_l):
     ---------
     title: str, name of the procedure;
     name_parts: list of str, part of names splitted;
-    root_l: list,
+    root_l: list
     """
-    dashes = len(title) * "-"
+    if verbose:
+        dashes = len(title) * "-"
 
-    print(f"\n{dashes}\n{title}\n{dashes}")
-    print(*name_parts)
-    num_composition(root_l, name_parts)
-    print()
+        print(f"\n{dashes}\n{title}\n{dashes}")
+        print(*name_parts)
+        num_composition(root_l, name_parts, verbose=verbose)
+        print()
 
     nl = root_l
     cond = False
     while not cond:
         nl = [reduced_num(n) for n in nl]
-        num_composition(nl, name_parts)
-        print()
+        if verbose:
+            num_composition(nl, name_parts, verbose=verbose)
+            print()
+
         cond = check_single_digit(nl)
 
     res, mes = final_root(nl)
-    print(f"{mes:^{len(name) - len(name_parts)}}")
+    if verbose:
+        print(f"{mes:^{len(name) - len(name_parts)}}")
     return res
 
 
-def original_soul_print(name):
+def original_soul_print(name, verbose=True):
     """
     ORIGINAL SOUL PRINT (OSP)
     inner soul desire; deepest longings; highest goal;
@@ -137,10 +125,10 @@ def original_soul_print(name):
         root_1.append(letters_total)
 
     title = "* Original Soul print (OSP) *"
-    return print_and_return(title, name_parts, root_1)
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
-def original_expressive_key(name):
+def original_expressive_key(name, verbose=True):
     """
     ORIGINAL EXPRESSIVE KEY (OEK)
     indicates goals here on earth and provides the necessary]
@@ -159,10 +147,10 @@ def original_expressive_key(name):
         root_1.append(letters_total)
 
     title = "* Original Expressive Key (OEK) *"
-    return print_and_return(title, name_parts, root_1)
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
-def original_personal_vibration(name):
+def original_personal_vibration(name, verbose=True):
     """
     ORIGINAL PERSONAL VIBRATION (OPV)
     both good and bad points in outward personality;
@@ -181,10 +169,10 @@ def original_personal_vibration(name):
         root_1.append(letters_total)
 
     title = "* Original Personal Vibration (OSP) *"
-    return print_and_return(title, name_parts, root_1)
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
-def change_soul_print(new_name):
+def change_soul_print(new_name, verbose=True):
     """
     CHANGE SOUL PRINT (CSP)
     add together the total numbers of all VOWELS
@@ -198,10 +186,10 @@ def change_soul_print(new_name):
         root_1.append(letters_total)
 
     title = "* Change Soul print (CSP) *"
-    return print_and_return(title, name_parts, root_1)
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
-def change_personality_vibration(new_name):
+def change_personality_vibration(new_name, verbose=True):
     """
     CHANGE PERSONALITY VIBRATION (CPV)
     add together the total numbers of all CONSONANTS
@@ -215,10 +203,10 @@ def change_personality_vibration(new_name):
         root_1.append(letters_total)
 
     title = "* Change Personality Vibration (CPV) *"
-    return print_and_return(title, name_parts, root_1)
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
-def change_expressive_key(new_name):
+def change_expressive_key(new_name, verbose=True):
     """
     CHANGE EXPRESSIVE KEY (CEK)
     Add together the total numbers of every letter.
@@ -231,17 +219,17 @@ def change_expressive_key(new_name):
         root_1.append(letters_total)
 
     title = "* Change Expressive Key (CEK) *"
-    return print_and_return(title, name_parts, root_1)
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
-def gnothology_chart(name, new_name):
+def gnothology_chart(name, new_name, verbose=False):
     """Gnothology Chart - pandas dataframe"""
-    osp = original_soul_print(name)
-    oek = original_expressive_key(name)
-    opv = original_personal_vibration(name)
-    csp = change_soul_print(new_name)
-    cpv = change_personality_vibration(new_name)
-    cek = change_expressive_key(new_name)
+    osp = original_soul_print(name, verbose=verbose)
+    oek = original_expressive_key(name, verbose=verbose)
+    opv = original_personal_vibration(name, verbose=verbose)
+    csp = change_soul_print(new_name, verbose=verbose)
+    cpv = change_personality_vibration(new_name, verbose=verbose)
+    cek = change_expressive_key(new_name, verbose=verbose)
     data_dict = {
         'procedure': ['OSP', 'OPV', 'OEK', 'CSP', 'CPV', 'CEK'],
         'value': [osp, opv, oek, csp, cpv, cek]
@@ -255,6 +243,6 @@ def gnothology_chart(name, new_name):
 
 
 if __name__ == '__main__':
-    name = "Aaryaansh Arora Khattri"
-    new_name = "Aaryaansh Khattri"
+    name = "Aarush Arora Khattri"
+    new_name = "Aarush A Khattri"
     gnothology_chart(name, new_name)
