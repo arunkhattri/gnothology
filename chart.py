@@ -41,6 +41,39 @@ def check_single_digit(num_list):
     return True
 
 
+def initial_rooting(name, vow=False, cons=False):
+    """
+    Firts Rooting
+    adding numbers for each part of name.
+
+    Parameter
+    ---------
+    name: str, full name
+    vow: bool, vowels
+    cons: bool, consonants
+
+    Return
+    ------
+    tuple of lists
+    res_root: list, total for each part of name.
+    name_parts: list, respective part of name
+    """
+    name_parts = name.upper().split()
+    res_root = []
+
+    for _, v in enumerate(name_parts):
+        if vow:
+            res_num = [NUM_SCALE[x] for x in v if x in VOWELS]
+        elif cons:
+            res_num = [NUM_SCALE[x] for x in v if x in CONSONANTS]
+        else:
+            res_num = [NUM_SCALE[x] for x in v]
+
+        letters_total = sum(res_num)
+        res_root.append(letters_total)
+    return res_root, name_parts
+
+
 def final_root(num_list):
     """Single digit"""
 
@@ -117,12 +150,7 @@ def original_soul_print(name, verbose=True):
     name: str, full name of the person
 
     """
-    name_parts = name.upper().split()
-    root_1 = []
-    for _, v in enumerate(name_parts):
-        res_num = [NUM_SCALE[x] for x in v if x in VOWELS]
-        letters_total = sum(res_num)
-        root_1.append(letters_total)
+    root_1, name_parts = initial_rooting(name, vow=True)
 
     title = "* Original Soul print (OSP) *"
     return print_and_return(title, name_parts, root_1, verbose=verbose)
@@ -139,12 +167,7 @@ def original_expressive_key(name, verbose=True):
     name: str, full name of the person
 
     """
-    name_parts = name.upper().split()
-    root_1 = []
-    for _, v in enumerate(name_parts):
-        res_num = [NUM_SCALE[x] for x in v]
-        letters_total = sum(res_num)
-        root_1.append(letters_total)
+    root_1, name_parts = initial_rooting(name)
 
     title = "* Original Expressive Key (OEK) *"
     return print_and_return(title, name_parts, root_1, verbose=verbose)
@@ -161,12 +184,7 @@ def original_personal_vibration(name, verbose=True):
     name: str, full name of the person
 
     """
-    name_parts = name.upper().split()
-    root_1 = []
-    for _, v in enumerate(name_parts):
-        res_num = [NUM_SCALE[x] for x in v if x in CONSONANTS]
-        letters_total = sum(res_num)
-        root_1.append(letters_total)
+    root_1, name_parts = initial_rooting(name, cons=True)
 
     title = "* Original Personal Vibration (OSP) *"
     return print_and_return(title, name_parts, root_1, verbose=verbose)
@@ -178,13 +196,7 @@ def change_soul_print(new_name, verbose=True):
     add together the total numbers of all VOWELS
     in the new name
     """
-    name_parts = new_name.upper().split()
-    root_1 = []
-    for _, v in enumerate(name_parts):
-        res_num = [NUM_SCALE[x] for x in v if x in VOWELS]
-        letters_total = sum(res_num)
-        root_1.append(letters_total)
-
+    root_1, name_parts = initial_rooting(name, vow=True)
     title = "* Change Soul print (CSP) *"
     return print_and_return(title, name_parts, root_1, verbose=verbose)
 
@@ -195,12 +207,7 @@ def change_personality_vibration(new_name, verbose=True):
     add together the total numbers of all CONSONANTS
     in the new name
     """
-    name_parts = new_name.upper().split()
-    root_1 = []
-    for _, v in enumerate(name_parts):
-        res_num = [NUM_SCALE[x] for x in v if x in CONSONANTS]
-        letters_total = sum(res_num)
-        root_1.append(letters_total)
+    root_1, name_parts = initial_rooting(name, cons=True)
 
     title = "* Change Personality Vibration (CPV) *"
     return print_and_return(title, name_parts, root_1, verbose=verbose)
@@ -211,12 +218,7 @@ def change_expressive_key(new_name, verbose=True):
     CHANGE EXPRESSIVE KEY (CEK)
     Add together the total numbers of every letter.
     """
-    name_parts = new_name.upper().split()
-    root_1 = []
-    for _, v in enumerate(name_parts):
-        res_num = [NUM_SCALE[x] for x in v]
-        letters_total = sum(res_num)
-        root_1.append(letters_total)
+    root_1, name_parts = initial_rooting(name)
 
     title = "* Change Expressive Key (CEK) *"
     return print_and_return(title, name_parts, root_1, verbose=verbose)
@@ -229,7 +231,7 @@ def gnothology_chart(name, new_name, verbose=False):
     opv = original_personal_vibration(name, verbose=verbose)
     csp = change_soul_print(new_name, verbose=verbose)
     cpv = change_personality_vibration(new_name, verbose=verbose)
-    cek = change_expressive_key(new_name, verbose=verbose)
+    cek = change_expressive_key(new_name, verbose=True)
     data_dict = {
         'procedure': ['OSP', 'OPV', 'OEK', 'CSP', 'CPV', 'CEK'],
         'value': [osp, opv, oek, csp, cpv, cek]
