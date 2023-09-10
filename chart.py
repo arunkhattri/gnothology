@@ -140,14 +140,14 @@ def print_and_return(title, name_parts, root_l, verbose=True):
 
 
 def original_soul_print(name, verbose=True):
-    """
-    ORIGINAL SOUL PRINT (OSP)
+    """ ORIGINAL SOUL PRINT (OSP)
     inner soul desire; deepest longings; highest goal;
     dream come true
 
     Parameter
     ---------
     name: str, full name of the person
+    verbose: bool, default True
 
     """
     root_1, name_parts = initial_rooting(name, vow=True)
@@ -157,14 +157,14 @@ def original_soul_print(name, verbose=True):
 
 
 def original_personal_vibration(name, verbose=True):
-    """
-    ORIGINAL PERSONAL VIBRATION (OPV)
+    """ ORIGINAL PERSONAL VIBRATION (OPV)
     both good and bad points in outward personality;
     with understanding, can be balanced by OPV
 
     Parameter
     ---------
     name: str, full name of the person
+    verbose: bool, default True
 
     """
     root_1, name_parts = initial_rooting(name, cons=True)
@@ -174,14 +174,14 @@ def original_personal_vibration(name, verbose=True):
 
 
 def original_expressive_key(name, verbose=True):
-    """
-    ORIGINAL EXPRESSIVE KEY (OEK)
+    """ ORIGINAL EXPRESSIVE KEY (OEK)
     indicates goals here on earth and provides the necessary]
     guidance for their attainment
 
     Parameter
     ---------
     name: str, full name of the person
+    verbose: bool, default True
 
     """
     root_1, name_parts = initial_rooting(name)
@@ -191,10 +191,14 @@ def original_expressive_key(name, verbose=True):
 
 
 def change_soul_print(new_name, verbose=True):
-    """
-    CHANGE SOUL PRINT (CSP)
+    """ CHANGE SOUL PRINT (CSP)
     add together the total numbers of all VOWELS
     in the new name
+
+    Parameter
+    ---------
+    name: str, full name of the person
+    verbose: bool, default True
     """
     root_1, name_parts = initial_rooting(name, vow=True)
     title = "* Change Soul print (CSP) *"
@@ -202,8 +206,7 @@ def change_soul_print(new_name, verbose=True):
 
 
 def change_personality_vibration(new_name, verbose=True):
-    """
-    CHANGE PERSONALITY VIBRATION (CPV)
+    """ CHANGE PERSONALITY VIBRATION (CPV)
     add together the total numbers of all CONSONANTS
     in the new name
     """
@@ -214,8 +217,7 @@ def change_personality_vibration(new_name, verbose=True):
 
 
 def change_expressive_key(new_name, verbose=True):
-    """
-    CHANGE EXPRESSIVE KEY (CEK)
+    """ CHANGE EXPRESSIVE KEY (CEK)
     Add together the total numbers of every letter.
     """
     root_1, name_parts = initial_rooting(name)
@@ -225,8 +227,7 @@ def change_expressive_key(new_name, verbose=True):
 
 
 def present_soul_print(present_name, verbose=True):
-    """
-    PRESENT SOUL PRINT (PSP)
+    """ PRESENT SOUL PRINT (PSP)
     add together the total numbers of all VOWELS
     in the present name
     """
@@ -235,7 +236,77 @@ def present_soul_print(present_name, verbose=True):
     return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
-def gnothology_chart(name, new_name, present_name, verbose=False):
+def present_personality_vibration(present_name, verbose=True):
+    """ PRESENT PERSONALITY VIBRATION (CPV)
+    add together the total numbers of all CONSONANTS
+    in the present name
+    """
+    root_1, name_parts = initial_rooting(name, cons=True)
+
+    title = "* Present Personality Vibration (CPV) *"
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
+
+
+def present_expressive_key(present_name, verbose=True):
+    """ PRESENT EXPRESSIVE KEY (CEK)
+    Add together the total numbers of every letter.
+    """
+    root_1, name_parts = initial_rooting(name)
+
+    title = "* Present Expressive Key (CEK) *"
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
+
+
+def original_plan(dd, mm, yyyy, verbose=True):
+    """ Original Plan.
+    Stack the sum total of birth day, month and year.
+    Reduce the final number to a single digit, except
+    for EMV's
+
+    Parameter
+    ---------
+    dd: int, date of birth
+    mm: int, month of birth
+    yyyy: int, year of birth
+    """
+    # TODO: check date format
+    sum_dob = dd + mm + yyyy
+    mes = f"| Total: {sum_dob}"
+    res = reduced_num(sum_dob)
+    mes += f" = {res}"
+    cond = len(str(res)) < 2 or res in EARTHLY_MASTER_NUM
+    if not cond:
+        res = reduced_num(res)
+        mes += f" = {res}"
+
+    if verbose:
+        print("Original Plan")
+        print(f"Month: {mm:>5}\nDay: {dd:>7}\nYear: {yyyy:>6}", end=" ")
+        print(f"{mes}")
+
+    return res
+
+
+def commencement(dd, mm, yyyy, verbose=True):
+    """ Commencement.
+    reduce date of birth to single digit, except for EMV's
+    """
+    res = dd
+    mes = f"| Total: {dd}"
+    cond = len(str(res)) < 2 or res in EARTHLY_MASTER_NUM
+    if not cond:
+        res = reduced_num(res)
+        mes += f" = {res}"
+
+    if verbose:
+        print("Commencement")
+        print(f"Month: {mm:>5}\nDay: {dd:>7}\nYear: {yyyy:>6}", end=" ")
+        print(f"{mes}")
+
+    return res
+
+
+def gnothology_chart(name, new_name, present_name, dd, mm, yyyy, verbose=False):
     """Gnothology Chart - pandas dataframe"""
     osp = original_soul_print(name, verbose=verbose)
     oek = original_expressive_key(name, verbose=verbose)
@@ -244,16 +315,22 @@ def gnothology_chart(name, new_name, present_name, verbose=False):
     cpv = change_personality_vibration(new_name, verbose=verbose)
     cek = change_expressive_key(new_name, verbose=verbose)
     psp = present_soul_print(present_name, verbose=verbose)
+    ppv = present_soul_print(present_name, verbose=verbose)
+    pek = present_soul_print(present_name, verbose=verbose)
+    op = original_plan(dd, mm, yyyy, verbose=verbose)
+    co = commencement(dd, mm, yyyy, verbose=True)
     data_dict = {
-        'code': ['OSP', 'OPV', 'OEK', 'CSP', 'CPV', 'CEK', 'PSP'],
+        'code': ['OSP', 'OPV', 'OEK', 'CSP', 'CPV', 'CEK', 'PSP', 'PPV', 'PEK', 'OP', 'CO'],
         'title': ["Original Soul Print", "Original Personality Vibration",
                   "Original Expressive Key", "Change Soul Print",
                   "Change Personality Vibration", "Change Expressive Key",
-                  "Present Soul Print"],
+                  "Present Soul Print", "Present Personality Vibration",
+                  "Present Expressive Key", "Original Plan", "Commencement"],
         'section': ["appellative", "appellative", "appellative", "appellative",
-                    "appellative", "appellative", "appellative"],
-        'level': ["O", "O", "O", "C", "C", "C", "P"],
-        'aspect': [osp, opv, oek, csp, cpv, cek, psp]
+                    "appellative", "appellative", "appellative", "appellative",
+                    "appellative", "parturitive", "parturitive"],
+        'level': ["O", "O", "O", "C", "C", "C", "P", "P", "P", "O", "O"],
+        'aspect': [osp, opv, oek, csp, cpv, cek, psp, ppv, pek, op, co]
     }
     df = pd.DataFrame(data_dict)
     title = "* Analysis Summary *"
@@ -268,4 +345,5 @@ if __name__ == '__main__':
     name = "Aarush Arora Khattri"
     new_name = "Aarush A Khattri"
     present_name = "Aarush Khattri"
-    gnothology_chart(name, new_name, present_name)
+    dd, mm, yyyy = 14, 5, 2008
+    gnothology_chart(name, new_name, present_name, dd, mm, yyyy)
