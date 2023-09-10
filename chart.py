@@ -156,23 +156,6 @@ def original_soul_print(name, verbose=True):
     return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
-def original_expressive_key(name, verbose=True):
-    """
-    ORIGINAL EXPRESSIVE KEY (OEK)
-    indicates goals here on earth and provides the necessary]
-    guidance for their attainment
-
-    Parameter
-    ---------
-    name: str, full name of the person
-
-    """
-    root_1, name_parts = initial_rooting(name)
-
-    title = "* Original Expressive Key (OEK) *"
-    return print_and_return(title, name_parts, root_1, verbose=verbose)
-
-
 def original_personal_vibration(name, verbose=True):
     """
     ORIGINAL PERSONAL VIBRATION (OPV)
@@ -187,6 +170,23 @@ def original_personal_vibration(name, verbose=True):
     root_1, name_parts = initial_rooting(name, cons=True)
 
     title = "* Original Personal Vibration (OSP) *"
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
+
+
+def original_expressive_key(name, verbose=True):
+    """
+    ORIGINAL EXPRESSIVE KEY (OEK)
+    indicates goals here on earth and provides the necessary]
+    guidance for their attainment
+
+    Parameter
+    ---------
+    name: str, full name of the person
+
+    """
+    root_1, name_parts = initial_rooting(name)
+
+    title = "* Original Expressive Key (OEK) *"
     return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
@@ -224,27 +224,48 @@ def change_expressive_key(new_name, verbose=True):
     return print_and_return(title, name_parts, root_1, verbose=verbose)
 
 
-def gnothology_chart(name, new_name, verbose=False):
+def present_soul_print(present_name, verbose=True):
+    """
+    PRESENT SOUL PRINT (PSP)
+    add together the total numbers of all VOWELS
+    in the present name
+    """
+    root_1, name_parts = initial_rooting(name, vow=True)
+    title = "* Present Soul print (PSP) *"
+    return print_and_return(title, name_parts, root_1, verbose=verbose)
+
+
+def gnothology_chart(name, new_name, present_name, verbose=False):
     """Gnothology Chart - pandas dataframe"""
     osp = original_soul_print(name, verbose=verbose)
     oek = original_expressive_key(name, verbose=verbose)
     opv = original_personal_vibration(name, verbose=verbose)
     csp = change_soul_print(new_name, verbose=verbose)
     cpv = change_personality_vibration(new_name, verbose=verbose)
-    cek = change_expressive_key(new_name, verbose=True)
+    cek = change_expressive_key(new_name, verbose=verbose)
+    psp = present_soul_print(present_name, verbose=verbose)
     data_dict = {
-        'procedure': ['OSP', 'OPV', 'OEK', 'CSP', 'CPV', 'CEK'],
-        'value': [osp, opv, oek, csp, cpv, cek]
+        'code': ['OSP', 'OPV', 'OEK', 'CSP', 'CPV', 'CEK', 'PSP'],
+        'title': ["Original Soul Print", "Original Personality Vibration",
+                  "Original Expressive Key", "Change Soul Print",
+                  "Change Personality Vibration", "Change Expressive Key",
+                  "Present Soul Print"],
+        'section': ["appellative", "appellative", "appellative", "appellative",
+                    "appellative", "appellative", "appellative"],
+        'level': ["O", "O", "O", "C", "C", "C", "P"],
+        'aspect': [osp, opv, oek, csp, cpv, cek, psp]
     }
     df = pd.DataFrame(data_dict)
     title = "* Analysis Summary *"
-    dashes = len(title) * "-"
+    len_dashes = 66
+    dashes = len_dashes * "-"
 
-    print(f"\n{dashes}\n{title}\n{dashes}")
+    print(f"\n{dashes}\n{title:^{len_dashes}}\n{dashes}")
     print(df)
 
 
 if __name__ == '__main__':
     name = "Aarush Arora Khattri"
     new_name = "Aarush A Khattri"
-    gnothology_chart(name, new_name)
+    present_name = "Aarush Khattri"
+    gnothology_chart(name, new_name, present_name)
