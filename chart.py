@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import numpy as np
+# import numpy as np
 import pandas as pd
 
 
@@ -320,7 +320,8 @@ def gnothology_chart(name, new_name, present_name, dd, mm, yyyy, verbose=False):
     op = original_plan(dd, mm, yyyy, verbose=verbose)
     co = commencement(dd, mm, yyyy, verbose=True)
     data_dict = {
-        'code': ['OSP', 'OPV', 'OEK', 'CSP', 'CPV', 'CEK', 'PSP', 'PPV', 'PEK', 'OP', 'CO'],
+        'code': ['OSP', 'OPV', 'OEK', 'CSP', 'CPV', 'CEK', 'PSP', 'PPV', 'PEK', 'OP',
+                 'CO'],
         'title': ["Original Soul Print", "Original Personality Vibration",
                   "Original Expressive Key", "Change Soul Print",
                   "Change Personality Vibration", "Change Expressive Key",
